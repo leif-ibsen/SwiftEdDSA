@@ -7,7 +7,7 @@ SwiftEdDSA has functionality to create public and private keys, to sign messages
 In your project Package.swift file add a dependency like<br/>
 
 	  dependencies: [
-	  .package(url: "https://github.com/leif-ibsen/SwiftEd", from: "1.0.0"),
+	  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "1.0.1"),
 	  ]
 
 <h2><b>Key Generation</b></h2>
