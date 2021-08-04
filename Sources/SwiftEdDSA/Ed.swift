@@ -22,8 +22,8 @@ public typealias Bytes = [Byte]
 ///
 public class Ed {
         
-    static let OID25519 = ASN1ObjectIdentifier("1.3.101.112")
-    static let OID448 = ASN1ObjectIdentifier("1.3.101.113")
+    static let OID25519 = ASN1ObjectIdentifier("1.3.101.112")!
+    static let OID448 = ASN1ObjectIdentifier("1.3.101.113")!
     
     // Not to be instantiated
     private init() {

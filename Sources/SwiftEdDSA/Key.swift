@@ -28,7 +28,8 @@ public class PublicKey: CustomStringConvertible {
     // MARK: Computed Properties
 
     /// The ASN1 encoding of *self*
-    public var asn1: ASN1 { get { return ASN1Sequence().add(ASN1Sequence().add(self.oid)).add(ASN1BitString(self.r, 0)) } }
+    public var asn1: ASN1 { get { do { return ASN1Sequence().add(ASN1Sequence().add(self.oid)).add(try ASN1BitString(self.r, 0)) } catch { return ASN1.NULL } } }
+
     /// A textual representation of the ASN1 encoding of *self*
     public var description: String { get { return self.asn1.description } }
     /// The PEM encoding of *self*

@@ -8,6 +8,9 @@
     <script src="../js/jquery.min.js" defer></script>
     <script src="../js/jazzy.js" defer></script>
     
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
     <a name="//apple_ref/swift/Class/PrivateKey" class="dashAnchor"></a>
@@ -15,6 +18,11 @@
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -69,6 +77,7 @@
             <h1>PrivateKey</h1>
               <div class="declaration">
                 <div class="language">
+                  
                   <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">PrivateKey</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                 </div>
@@ -81,9 +90,11 @@
               <div class="task-name-container">
                 <a name="/Stored%20Properties"></a>
                 <a name="//apple_ref/swift/Section/Stored Properties" class="dashAnchor"></a>
-                <a href="#/Stored%20Properties">
-                  <h3 class="section-name">Stored Properties</h3>
-                </a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Stored%20Properties"></a>
+                  <h3 class="section-name"><p>Stored Properties</p>
+</h3>
+                </div>
               </div>
               <ul>
                 <li class="item">
@@ -146,9 +157,11 @@
               <div class="task-name-container">
                 <a name="/Computed%20Properties"></a>
                 <a name="//apple_ref/swift/Section/Computed Properties" class="dashAnchor"></a>
-                <a href="#/Computed%20Properties">
-                  <h3 class="section-name">Computed Properties</h3>
-                </a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Computed%20Properties"></a>
+                  <h3 class="section-name"><p>Computed Properties</p>
+</h3>
+                </div>
               </div>
               <ul>
                 <li class="item">
@@ -238,9 +251,11 @@
               <div class="task-name-container">
                 <a name="/Constructors"></a>
                 <a name="//apple_ref/swift/Section/Constructors" class="dashAnchor"></a>
-                <a href="#/Constructors">
-                  <h3 class="section-name">Constructors</h3>
-                </a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Constructors"></a>
+                  <h3 class="section-name"><p>Constructors</p>
+</h3>
+                </div>
               </div>
               <ul>
                 <li class="item">
@@ -248,7 +263,7 @@
                     <code>
                     <a name="/s:10SwiftEdDSA10PrivateKeyC4kindAcA0B0C4KindO_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(kind:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC4kindAcA0B0C4KindO_tcfc">init(kind:)</a>
+                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC4kindAcA0B0C4KindO_tcfc">init(kind:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -294,7 +309,7 @@
                     <code>
                     <a name="/s:10SwiftEdDSA10PrivateKeyC1sACSays5UInt8VG_tKcfc"></a>
                     <a name="//apple_ref/swift/Method/init(s:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC1sACSays5UInt8VG_tKcfc">init(s:)</a>
+                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC1sACSays5UInt8VG_tKcfc">init(s:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -345,7 +360,7 @@
                     <code>
                     <a name="/s:10SwiftEdDSA10PrivateKeyC3derACSays5UInt8VG_tKcfc"></a>
                     <a name="//apple_ref/swift/Method/init(der:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC3derACSays5UInt8VG_tKcfc">init(der:)</a>
+                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC3derACSays5UInt8VG_tKcfc">init(der:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -396,7 +411,7 @@
                     <code>
                     <a name="/s:10SwiftEdDSA10PrivateKeyC3pemACSS_tKcfc"></a>
                     <a name="//apple_ref/swift/Method/init(pem:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC3pemACSS_tKcfc">init(pem:)</a>
+                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC3pemACSS_tKcfc">init(pem:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -448,9 +463,11 @@
               <div class="task-name-container">
                 <a name="/Instance%20Methods"></a>
                 <a name="//apple_ref/swift/Section/Instance Methods" class="dashAnchor"></a>
-                <a href="#/Instance%20Methods">
-                  <h3 class="section-name">Instance Methods</h3>
-                </a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Instance%20Methods"></a>
+                  <h3 class="section-name"><p>Instance Methods</p>
+</h3>
+                </div>
               </div>
               <ul>
                 <li class="item">
@@ -458,7 +475,7 @@
                     <code>
                     <a name="/s:10SwiftEdDSA10PrivateKeyC4sign7message7contextSays5UInt8VGAI_AItKF"></a>
                     <a name="//apple_ref/swift/Method/sign(message:context:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC4sign7message7contextSays5UInt8VGAI_AItKF">sign(message:context:)</a>
+                    <a class="token" href="#/s:10SwiftEdDSA10PrivateKeyC4sign7message7contextSays5UInt8VGAI_AItKF">sign(message:<wbr>context:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -525,8 +542,8 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-06-18)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-08-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

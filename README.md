@@ -7,7 +7,7 @@ SwiftEdDSA has functionality to create public and private keys, to sign messages
 In your project Package.swift file add a dependency like<br/>
 
 	  dependencies: [
-	  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "1.0.1"),
+	  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "2.0.0"),
 	  ]
 
 <h2><b>Key Generation</b></h2>
@@ -112,8 +112,8 @@ SwiftEdDSA requires Swift 5.0.
 The SwiftEdDSA package depends on the ASN1 and BigInt packages
 
     dependencies: [
-        .package(url: "https://github.com/leif-ibsen/ASN1", from: "1.2.1"),
-        .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.1.2"),
+        .package(url: "https://github.com/leif-ibsen/ASN1", from: "2.0.0"),
+        .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.2.5"),
     ],
 
 <h2><b>References</b></h2>
