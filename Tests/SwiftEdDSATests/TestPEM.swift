@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import SwiftEdDSA
 
 class TestPEM: XCTestCase {
 
