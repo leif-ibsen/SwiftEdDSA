@@ -81,7 +81,7 @@ public class Ed {
     /// - Parameters:
     ///   - r: The public key value
     ///   - s: The private key value
-    /// - Returns: *true* iff r/s is a valid key pair
+    /// - Returns: *true* iff r/s constitutes a valid key pair
     public static func keyPairIsValid(r: Bytes, s: Bytes) -> Bool {
         do {
             return try PublicKey(privateKey: PrivateKey(s: s)).r == r

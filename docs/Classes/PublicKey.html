@@ -194,9 +194,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10SwiftEdDSA9PublicKeyC11descriptionSSvp"></a>
-                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SwiftEdDSA9PublicKeyC11descriptionSSvp">description</a>
+                    <a name="/s:10SwiftEdDSA9PublicKeyC3derSays5UInt8VGvp"></a>
+                    <a name="//apple_ref/swift/Property/der" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SwiftEdDSA9PublicKeyC3derSays5UInt8VGvp">der</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -204,14 +204,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A textual representation of the ASN1 encoding of <em>self</em></p>
+                        <p>The DER encoding of <em>self</em></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">der</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:10SwiftEdDSA5Bytesa">Bytes</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -239,6 +239,33 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">pem</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SwiftEdDSA9PublicKeyC11descriptionSSvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SwiftEdDSA9PublicKeyC11descriptionSSvp">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A textual representation of the ASN1 encoding of <em>self</em></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -274,7 +301,7 @@
                         <p>Creates a public key from its value</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    An exception if the key size is wrong or <em>r</em> cannot be decoded to a curve point
+    An exception if the key size is wrong or <em>r</em> cannot be decoded as a curve point
 
 </div>
 
@@ -368,7 +395,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Creates a public key from its ASN1 DER encoding</p>
+                        <p>Creates a public key from its DER encoding</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     An exception if the DER encoding is wrong
@@ -396,7 +423,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The public key ASN1 DER encoding</p>
+                                  <p>The public key DER encoding</p>
                                 </div>
                               </td>
                             </tr>
@@ -549,7 +576,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2023 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2023-04-19)</p>
+          <p>&copy; 2023 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2023-09-12)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>

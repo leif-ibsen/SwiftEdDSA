@@ -142,7 +142,7 @@ class TestSignature448: XCTestCase {
         try doTest4(secretKey3, publicKey3)
     }
 
-    // wycheproof test vectors
+    // Project Wycheproof test vectors
 
     let wpPublicKey = "419610a534af127f583b04818cdb7f0ff300b025f2e01682bcae33fd691cee039511df0cddc690ee978426e8b38e50ce5af7dcfba50f704c00"
     let wpSecretKey = "88301e076518d3537f9302ee0f5223e4b63e1f016007d3c2ebdfec5f70997e8119c6bad0ae7b803f48791ca8ec549aa2a1b862f7a51590b9d5"
@@ -160,15 +160,21 @@ class TestSignature448: XCTestCase {
     let wpSignature6 = "a8ca64d1ab00eae77fd2854d8422db3ae12fca91c14f274f30a44df98590786ec4cbb96a9564fc1b9b16c22d2bd00aa65f0876323729f5ac809fb0b89a4d3f27afbabb596851d835173d60ea34e0875359f3d6adb13cef1395b7eaa5f9147583ff38b4deb183062874915bf194ae61072300"
     let wpMessage7 =  "6161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161"
     let wpSignature7 = "b205d3e24ccef64c1e86f15f48ddfa682453503489475188b04a8f55860b3c8a9c01e6de820bb7d9b15daff8de25a4a870e987157a115ec1802da0d0606da12842ea7eab658b5eea6dd1f3a641a5174425578003cd318b8d6b8dcb4de954b5078d1912c578ad8281515d6df3672b94173f00"
-     
+    let wpMessage8 =  "202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f60"
+    let wpSignature8 = "3492ef66e5fdf1503e9e206c5c2f0d4b7891aad793575527d2251e0df1b97c2feac188bc382ce3c92c4bc36ba2695f32bedadd480eaa932300d0db1f9a9c60844d2ea5aea64933c7be46c4f9d21cb48b39eae23d08496de7ce9501197185cc5d4ff8aa4b018ce7ad321f6a7d778c4a070400"
+    let wpMessage9 = "ffffffffffffffffffffffffffffffff"
+    let wpSignature9 = "545e1905af1b5886552eaf78e17304c6f83fcfb3444df2d1ea056486db615e3bb29131bb0c1fd295364dc515dae581967148eb23c6c9012e806d3623baff00548c648e3cb3756aaaaf659f2fb7dd2e71c7611448593ca63f2a98913ab7f182e6820eaf1334e2745e0e7bc0dccab98de71600"
+
     func test5() throws {
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage1, "", wpSignature1)
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage2, "", wpSignature2)
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage3, "", wpSignature3)
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage4, "", wpSignature4)
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage5, "", wpSignature5)
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage6, "", wpSignature6)
-         try doTest1(wpSecretKey, wpPublicKey, wpMessage7, "", wpSignature7)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage1, "", wpSignature1)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage2, "", wpSignature2)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage3, "", wpSignature3)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage4, "", wpSignature4)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage5, "", wpSignature5)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage6, "", wpSignature6)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage7, "", wpSignature7)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage8, "", wpSignature8)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage9, "", wpSignature9)
      }
 
 }

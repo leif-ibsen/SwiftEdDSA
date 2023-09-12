@@ -92,7 +92,7 @@ class TestSignature25519: XCTestCase {
         XCTAssertFalse(Ed.keyPairIsValid(r: hex2bytes(publicKey4), s: hex2bytes(secretKey3)))
     }
 
-    // wycheproof test vectors
+    // Project Wycheproof test vectors
     
     let wpPublicKey = "7d4d0e7f6153a69b6242b522abbee685fda4420f8834b108c3bdae369ef549fa"
     let wpSecretKey = "add4bb8103785baf9ac534258e8aaf65f5f1adb5ef5f3df19bb80ab989c4d64b"
@@ -110,6 +110,10 @@ class TestSignature25519: XCTestCase {
     let wpSignature6 = "d46543bfb892f84ec124dcdfc847034c19363bf3fc2fa89b1267833a14856e52e60736918783f950b6f1dd8d40dc343247cd43ce054c2d68ef974f7ed0f3c60f"
     let wpMessage7 = "6161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161"
     let wpSignature7 = "879350045543bc14ed2c08939b68c30d22251d83e018cacbaf0c9d7a48db577e80bdf76ce99e5926762bc13b7b3483260a5ef63d07e34b58eb9c14621ac92f00"
+    let wpMessage8 = "202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f60"
+    let wpSignature8 = "7bdc3f9919a05f1d5db4a3ada896094f6871c1f37afc75db82ec3147d84d6f237b7e5ecc26b59cfea0c7eaf1052dc427b0f724615be9c3d3e01356c65b9b5109"
+    let wpMessage9 = "ffffffffffffffffffffffffffffffff"
+    let wpSignature9 = "5dbd7360e55aa38e855d6ad48c34bd35b7871628508906861a7c4776765ed7d1e13d910faabd689ec8618b78295c8ab8f0e19c8b4b43eb8685778499e943ae04"
 
     func test4() throws {
         try doTest1(wpSecretKey, wpPublicKey, wpMessage1, wpSignature1)
@@ -119,6 +123,8 @@ class TestSignature25519: XCTestCase {
         try doTest1(wpSecretKey, wpPublicKey, wpMessage5, wpSignature5)
         try doTest1(wpSecretKey, wpPublicKey, wpMessage6, wpSignature6)
         try doTest1(wpSecretKey, wpPublicKey, wpMessage7, wpSignature7)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage8, wpSignature8)
+        try doTest1(wpSecretKey, wpPublicKey, wpMessage9, wpSignature9)
     }
 
 }
