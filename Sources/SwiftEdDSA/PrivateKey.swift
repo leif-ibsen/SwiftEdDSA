@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import ASN1
+import Digest
 
 ///
 /// A private key - either an Ed25519 private key or an Ed448 private key
@@ -136,9 +137,14 @@ public class PrivateKey: CustomStringConvertible {
             if context.count > 0 {
                 throw Ed.Ex.context
             }
-            let md = MD()
+            let md = MessageDigest(.SHA2_512)
             md.update(self.s)
-            let (h0, h1) = md.digest2()
+            let h = md.digest()
+            var h0 = Bytes(h[0 ..< 32])
+            h0[0] &= 0xf8
+            h0[31] &= 0x7f
+            h0[31] |= 0x40
+            let h1 = Bytes(h[32 ..< 64])
             md.update(h1)
             md.update(message)
             let r = Ed25519.reduceModL(Ed.toBInt(md.digest()))
@@ -154,13 +160,18 @@ public class PrivateKey: CustomStringConvertible {
             if context.count > 255 {
                 throw Ed.Ex.context
             }
-            let shake = SHAKE256()
+            let shake = SHAKE(.SHAKE256)
             shake.update(self.s)
-            let (h0, h1) = shake.digest2()
+            let h = shake.digest(114)
+            var h0 = Bytes(h[0 ..< 57])
+            h0[0] &= 0xfc
+            h0[55] |= 0x80
+            h0[56] = 0x00
+            let h1 = Bytes(h[57 ..< 114])
             shake.update(Ed448.dom4Bytes(context))
             shake.update(h1)
             shake.update(message)
-            let r = Ed448.reduceModL(Ed.toBInt(shake.digest()))
+            let r = Ed448.reduceModL(Ed.toBInt(shake.digest(114)))
             let R = Point448.multiplyG(Ed448.toBytes(r)).encode()
             let a = Ed.toBInt(h0)
             let A = Point448.multiplyG(h0).encode()
@@ -168,7 +179,7 @@ public class PrivateKey: CustomStringConvertible {
             shake.update(R)
             shake.update(A)
             shake.update(message)
-            let k = Ed448.reduceModL(Ed.toBInt(shake.digest()))
+            let k = Ed448.reduceModL(Ed.toBInt(shake.digest(114)))
             return R + Ed448.toBytes(Ed448.reduceModL(k * a + r))
         }
     }

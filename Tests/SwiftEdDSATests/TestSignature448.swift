@@ -177,4 +177,20 @@ class TestSignature448: XCTestCase {
         try doTest1(wpSecretKey, wpPublicKey, wpMessage9, "", wpSignature9)
      }
 
+    func doTest6(_ secretKey: String, _ publicKey: String) throws {
+        let sk1 = try PrivateKey(s: hex2bytes(secretKey))
+        let pk1 = try PublicKey(r: hex2bytes(publicKey))
+        XCTAssertEqual(pk1.r, PublicKey(privateKey: sk1).r)
+    }
+    
+    func test6() throws {
+        try doTest6(secretKey1, publicKey1)
+        try doTest6(secretKey2, publicKey2)
+        try doTest6(secretKey3, publicKey3)
+        try doTest6(secretKey4, publicKey4)
+        try doTest6(secretKey5, publicKey5)
+        try doTest6(secretKey6, publicKey6)
+        try doTest6(secretKey7, publicKey7)
+        try doTest6(secretKey8, publicKey8)
+    }
 }

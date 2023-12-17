@@ -19,7 +19,7 @@ SwiftEdDSA has functionality to create public and private keys, to sign messages
 In your project Package.swift file add a dependency like<br/>
 
 	  dependencies: [
-	  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "2.3.0"),
+	  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "3.0.0"),
 	  ]
 
 <h2 id="newkeys"><b>Creating New Keys</b></h2>
@@ -133,11 +133,12 @@ rather than generate a new instance for each verification.
 
 SwiftEdDSA requires Swift 5.0.
 
-The SwiftEdDSA package depends on the ASN1 and BigInt packages
+The SwiftEdDSA package depends on the ASN1, BigInt and Digest packages
 
     dependencies: [
         .package(url: "https://github.com/leif-ibsen/ASN1", from: "2.2.0"),
         .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.14.0"),
+        .package(url: "https://github.com/leif-ibsen/Digest", from: "1.1.0"),
     ],
 
 <h2 id="ref"><b>References</b></h2>

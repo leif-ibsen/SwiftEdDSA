@@ -6,6 +6,7 @@
 //
 
 import ASN1
+import Digest
 
 ///
 /// A public key - either an Ed25519 public key or an Ed448 public key
@@ -72,14 +73,20 @@ public class PublicKey: CustomStringConvertible {
     public convenience init(privateKey: PrivateKey) {
         do {
             if privateKey.oid == Ed.OID25519 {
-                let md = MD()
+                let md = MessageDigest(.SHA2_512)
                 md.update(privateKey.s)
-                let (h, _) = md.digest2()
+                var h = Bytes(md.digest()[0 ..< 32])
+                h[0] &= 0xf8
+                h[31] &= 0x7f
+                h[31] |= 0x40
                 try self.init(r: Point25519.multiplyG(h).encode())
             } else {
-                let shake = SHAKE256()
+                let shake = SHAKE(.SHAKE256)
                 shake.update(privateKey.s)
-                let (h, _) = shake.digest2()
+                var h = shake.digest(57)
+                h[0] &= 0xfc
+                h[55] |= 0x80
+                h[56] = 0x00
                 try self.init(r: Point448.multiplyG(h).encode())
             }
         } catch {
@@ -151,7 +158,7 @@ public class PublicKey: CustomStringConvertible {
             if Ed.toBInt(S) >= Ed25519.L {
                 return false
             }
-            let md = MD()
+            let md = MessageDigest(.SHA2_512)
             md.update(R)
             md.update(self.r)
             md.update(message)
@@ -167,12 +174,12 @@ public class PublicKey: CustomStringConvertible {
             if Ed.toBInt(S) >= Ed448.L {
                 return false
             }
-            let shake = SHAKE256()
+            let shake = SHAKE(.SHAKE256)
             shake.update(Ed448.dom4Bytes(context))
             shake.update(R)
             shake.update(self.r)
             shake.update(message)
-            let k = shake.digest()
+            let k = shake.digest(114)
             let p = Point448.multiplyG(S).add(self.multiply448(k).negate())
             return p.encode() == R
         }
