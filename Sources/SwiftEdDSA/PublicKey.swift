@@ -147,7 +147,7 @@ public class PublicKey: CustomStringConvertible {
     ///   - signature: The EdDSA signature to verify
     ///   - message: The message to verify *signature* for
     ///   - context: The context - must be the same as in the corresponding sign operation for the verification to succeed
-    /// - Returns: *true* iff the signature is verified
+    /// - Returns: *true* if the signature is verified, else *false*
     public func verify(signature: Bytes, message: Bytes, context: Bytes = []) -> Bool {
         if signature.count == 64 {
             if context.count > 0 {

@@ -130,9 +130,10 @@ public class PrivateKey: CustomStringConvertible {
     /// - Parameters:
     ///   - message: The message to sign
     ///   - context: The context - the default value is an empty array
+    ///   - deterministic: If *true* generate a deterministic signature, else generate a non-deterministic signature - *true* is default
     /// - Returns: The EdDSA signature - 64 bytes for Ed25519, 114 bytes for Ed448
     /// - Throws: A *context* exception if *context* contains more than 0 bytes for Ed25519 or more than 255 bytes for Ed448
-    public func sign(message: Bytes, context: Bytes = []) throws -> Bytes {
+    public func sign(message: Bytes, context: Bytes = [], deterministic: Bool = true) throws -> Bytes {
         if self.oid == Ed.OID25519 {
             if context.count > 0 {
                 throw Ed.Ex.context
@@ -145,8 +146,17 @@ public class PrivateKey: CustomStringConvertible {
             h0[31] &= 0x7f
             h0[31] |= 0x40
             let h1 = Bytes(h[32 ..< 64])
-            md.update(h1)
-            md.update(message)
+            if deterministic {
+                md.update(h1)
+                md.update(message)
+            } else {
+                var z = Bytes(repeating: 0, count: 32)
+                Ed.randomBytes(&z)
+                md.update(z)
+                md.update(h1)
+                md.update(Bytes(repeating: 0, count: 64))
+                md.update(message)
+            }
             let r = Ed25519.reduceModL(Ed.toBInt(md.digest()))
             let R = Point25519.multiplyG(Ed25519.toBytes(r)).encode()
             let a = Ed.toBInt(h0)
@@ -168,9 +178,26 @@ public class PrivateKey: CustomStringConvertible {
             h0[55] |= 0x80
             h0[56] = 0x00
             let h1 = Bytes(h[57 ..< 114])
-            shake.update(Ed448.dom4Bytes(context))
-            shake.update(h1)
-            shake.update(message)
+            if deterministic {
+                shake.update(Ed448.dom4Bytes(context))
+                shake.update(h1)
+                shake.update(message)
+            } else {
+                var z = Bytes(repeating: 0, count: 57)
+                Ed.randomBytes(&z)
+                var zeroCount = 408 - context.count - 124
+                if zeroCount >= 136 {
+                    zeroCount -= 136
+                }
+                if zeroCount >= 136 {
+                    zeroCount -= 136
+                }
+                shake.update(Ed448.dom4Bytes(context))
+                shake.update(z)
+                shake.update(h1)
+                shake.update(Bytes(repeating: 0, count: zeroCount))
+                shake.update(message)
+            }
             let r = Ed448.reduceModL(Ed.toBInt(shake.digest(114)))
             let R = Point448.multiplyG(Ed448.toBytes(r)).encode()
             let a = Ed.toBInt(h0)

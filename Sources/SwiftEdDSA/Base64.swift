@@ -5,9 +5,6 @@
 //  Created by Leif Ibsen on 06/01/2020.
 //
 
-///
-/// The Base64 class exists to provide a namespace, there is no Base64 instances. It contains static functions for Base64 encoding and decoding.
-///
 public class Base64 {
     
     static let linesize = 76

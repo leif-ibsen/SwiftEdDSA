@@ -5,6 +5,7 @@
 //  Created by Leif Ibsen on 24/04/2020.
 //
 
+import Foundation
 import ASN1
 import BigInt
 
@@ -15,11 +16,8 @@ public typealias Byte = UInt8
 ///
 /// An array of 8-bit unsigned integers
 ///
-public typealias Bytes = [Byte]
+public typealias Bytes = [UInt8]
 
-///
-/// The Ed class exists to provide a namespace, there is no Ed instances.
-///
 public class Ed {
         
     static let OID25519 = ASN1ObjectIdentifier("1.3.101.112")!
@@ -29,6 +27,11 @@ public class Ed {
     private init() {
     }
     
+    static func randomBytes(_ bytes: inout Bytes) {
+        guard SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes) == errSecSuccess else {
+            fatalError("randomBytes failed")
+        }
+    }
 
     // MARK: Exceptions
 
@@ -81,7 +84,7 @@ public class Ed {
     /// - Parameters:
     ///   - r: The public key value
     ///   - s: The private key value
-    /// - Returns: *true* iff r/s constitutes a valid key pair
+    /// - Returns: *true* if *r* and *s* constitute a valid key pair, else *false*
     public static func keyPairIsValid(r: Bytes, s: Bytes) -> Bool {
         do {
             return try PublicKey(privateKey: PrivateKey(s: s)).r == r

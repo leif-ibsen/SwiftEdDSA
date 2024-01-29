@@ -47,7 +47,7 @@ class TestSignature25519: XCTestCase {
         let privKey = try PrivateKey(s: hex2bytes(secretKey))
         let pubKey = PublicKey(privateKey: privKey)
         XCTAssertEqual(pubKey.r, hex2bytes(publicKey))
-        let sig = try privKey.sign(message: hex2bytes(message))
+        let sig = try privKey.sign(message: hex2bytes(message), deterministic: true)
         XCTAssertEqual(sig, hex2bytes(signature))
         XCTAssert(pubKey.verify(signature: sig, message: hex2bytes(message)))
     }
@@ -127,4 +127,26 @@ class TestSignature25519: XCTestCase {
         try doTest1(wpSecretKey, wpPublicKey, wpMessage9, wpSignature9)
     }
 
+    func doTest5(_ message: Bytes) throws {
+        let privKey = try PrivateKey(s: hex2bytes(wpSecretKey))
+        let pubKey = try PublicKey(r: hex2bytes(wpPublicKey))
+        for _ in 0 ..< 5 {
+            let sig = try privKey.sign(message: message, deterministic: false)
+            XCTAssertTrue(pubKey.verify(signature: sig, message: message))
+            XCTAssertFalse(pubKey.verify(signature: sig, message: message + [1]))
+        }
+    }
+
+    // Test non-deterministic signatures
+    func test5() throws {
+        try doTest5(hex2bytes(wpMessage1))
+        try doTest5(hex2bytes(wpMessage2))
+        try doTest5(hex2bytes(wpMessage3))
+        try doTest5(hex2bytes(wpMessage4))
+        try doTest5(hex2bytes(wpMessage5))
+        try doTest5(hex2bytes(wpMessage6))
+        try doTest5(hex2bytes(wpMessage7))
+        try doTest5(hex2bytes(wpMessage8))
+        try doTest5(hex2bytes(wpMessage9))
+    }
 }
