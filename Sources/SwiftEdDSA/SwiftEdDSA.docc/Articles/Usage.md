@@ -2,9 +2,9 @@
 
 ## 
 
-In your project Package.swift file add a dependency like<br/>
+In your project Package.swift file add a dependency like
 ```swift
 dependencies: [
-  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "3.1.0"),
+  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "3.2.0"),
 ]
 ```

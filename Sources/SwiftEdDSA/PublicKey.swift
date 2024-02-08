@@ -26,13 +26,13 @@ public class PublicKey: CustomStringConvertible {
     
     // MARK: Computed Properties
 
-    /// The ASN1 encoding of *self*
+    /// The ASN1 encoding of `self`
     public var asn1: ASN1 { get { do { return ASN1Sequence().add(ASN1Sequence().add(self.oid)).add(try ASN1BitString(self.r, 0)) } catch { return ASN1.NULL } } }
-    /// The DER encoding of *self*
+    /// The DER encoding of `self`
     public var der: Bytes { get { return self.asn1.encode() } }
-    /// The PEM encoding of *self*
+    /// The PEM encoding of `self`
     public var pem: String { get { return Base64.pemEncode(self.asn1.encode(), "PUBLIC KEY") } }
-    /// A textual representation of the ASN1 encoding of *self*
+    /// A textual representation of the ASN1 encoding of `self`
     public var description: String { get { return self.asn1.description } }
 
     
@@ -42,7 +42,7 @@ public class PublicKey: CustomStringConvertible {
     ///
     /// - Parameters:
     ///   - r: The public key value, 32 bytes for Ed25519 - 57 bytes for Ed448
-    /// - Throws: An exception if the key size is wrong or *r* cannot be decoded as a curve point
+    /// - Throws: An exception if the key size is wrong or `r` cannot be decoded as a curve point
     public init(r: Bytes) throws {
         self.r = r
         if r.count == 32 {
@@ -145,9 +145,9 @@ public class PublicKey: CustomStringConvertible {
     ///
     /// - Parameters:
     ///   - signature: The EdDSA signature to verify
-    ///   - message: The message to verify *signature* for
+    ///   - message: The message to verify signature for
     ///   - context: The context - must be the same as in the corresponding sign operation for the verification to succeed
-    /// - Returns: *true* if the signature is verified, else *false*
+    /// - Returns: `true` if the signature is verified, else `false`
     public func verify(signature: Bytes, message: Bytes, context: Bytes = []) -> Bool {
         if signature.count == 64 {
             if context.count > 0 {

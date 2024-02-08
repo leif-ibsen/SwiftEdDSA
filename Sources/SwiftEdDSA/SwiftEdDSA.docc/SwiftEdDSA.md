@@ -2,7 +2,7 @@
 
 ## Overview
 
-SwiftEdDSA implements the EdDSA digital signature algorithm as defined in RFC 8032.
+SwiftEdDSA implements the EdDSA digital signature algorithm as defined in RFC 8032.  
 It is based on the Edwards 25519 and Edwards 448 elliptic curves.
 
 SwiftEdDSA functionality:
@@ -12,7 +12,7 @@ SwiftEdDSA functionality:
 * Verify signatures
 
 > Important:
-SwiftEdDSA requires Swift 5.0. It also requires that the Int and UInt types be 64 bit types.
+SwiftEdDSA requires Swift 5.0. It also requires that the `Int` and `UInt` types be 64 bit types.
 
 ## Topics
 

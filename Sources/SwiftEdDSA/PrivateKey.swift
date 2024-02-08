@@ -25,13 +25,13 @@ public class PrivateKey: CustomStringConvertible {
 
     // MARK: Computed Properties
 
-    /// The ASN1 encoding of *self*
+    /// The ASN1 encoding of `self`
     public var asn1: ASN1 { get { return ASN1Sequence().add(ASN1Integer(BInt.ZERO)).add(ASN1Sequence().add(self.oid)).add(ASN1OctetString([4, Byte(self.s.count)] + self.s)) } }
-    /// The DER encoding of *self*
+    /// The DER encoding of `self`
     public var der: Bytes { get { return self.asn1.encode() } }
-    /// The PEM encoding of *self*
+    /// The PEM encoding of `self`
     public var pem: String { get { return Base64.pemEncode(self.asn1.encode(), "PRIVATE KEY") } }
-    /// A textual representation of the ASN1 encoding of *self*
+    /// A textual representation of the ASN1 encoding of `self`
     public var description: String { get { return self.asn1.description } }
 
     
@@ -130,9 +130,9 @@ public class PrivateKey: CustomStringConvertible {
     /// - Parameters:
     ///   - message: The message to sign
     ///   - context: The context - the default value is an empty array
-    ///   - deterministic: If *true* generate a deterministic signature, else generate a non-deterministic signature - *true* is default
+    ///   - deterministic: If `true` generate a deterministic signature, else generate a non-deterministic signature - `true` is default
     /// - Returns: The EdDSA signature - 64 bytes for Ed25519, 114 bytes for Ed448
-    /// - Throws: A *context* exception if *context* contains more than 0 bytes for Ed25519 or more than 255 bytes for Ed448
+    /// - Throws: A `context` exception if `context` contains more than 0 bytes for Ed25519 or more than 255 bytes for Ed448
     public func sign(message: Bytes, context: Bytes = [], deterministic: Bool = true) throws -> Bytes {
         if self.oid == Ed.OID25519 {
             if context.count > 0 {

@@ -9,13 +9,10 @@ import Foundation
 import ASN1
 import BigInt
 
-///
-/// An 8-bit unsigned integer
-///
+/// Unsigned 8 bit value
 public typealias Byte = UInt8
-///
-/// An array of 8-bit unsigned integers
-///
+
+/// Array of unsigned 8 bit values
 public typealias Bytes = [UInt8]
 
 public class Ed {
@@ -36,7 +33,7 @@ public class Ed {
     // MARK: Exceptions
 
     ///
-    /// Exceptions
+    /// EdDSA exceptions
     ///
     public enum Ex: Error {
         /// ASN1 structure exception
@@ -57,7 +54,7 @@ public class Ed {
     // MARK: Curve kinds
 
     ///
-    /// Curve kind - Ed25519 or Ed448
+    /// EdDSA curve kinds
     ///
     public enum Kind {
         /// Curve Ed25519
@@ -73,7 +70,7 @@ public class Ed {
     ///
     /// - Parameters:
     ///   - kind: The curve kind
-    /// - Returns: The PublicKey/PrivateKey pair
+    /// - Returns: The PublicKey / PrivateKey pair
     public static func makeKeyPair(kind: Ed.Kind) -> (PublicKey, PrivateKey) {
         let privKey = PrivateKey(kind: kind)
         return (PublicKey(privateKey: privKey), privKey)
@@ -84,7 +81,7 @@ public class Ed {
     /// - Parameters:
     ///   - r: The public key value
     ///   - s: The private key value
-    /// - Returns: *true* if *r* and *s* constitute a valid key pair, else *false*
+    /// - Returns: `true` if `r` and `s` constitute a valid key pair, else `false`
     public static func keyPairIsValid(r: Bytes, s: Bytes) -> Bool {
         do {
             return try PublicKey(privateKey: PrivateKey(s: s)).r == r

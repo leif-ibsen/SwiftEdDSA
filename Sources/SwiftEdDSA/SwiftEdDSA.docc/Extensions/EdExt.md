@@ -2,7 +2,7 @@
 
 ## Overview
 
-There is no Ed instances. Ed exists to provide a namespace.
+Ed exists to provide a namespace. There is no Ed instances.
 
 ## Topics
 
