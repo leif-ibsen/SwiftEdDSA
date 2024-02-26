@@ -2,7 +2,7 @@
 
 ## Overview
 
-Ed exists to provide a namespace. There is no Ed instances.
+Ed exists to provide a namespace. It contains static methods for keypair generation and validation. There is no Ed instances.
 
 ## Topics
 

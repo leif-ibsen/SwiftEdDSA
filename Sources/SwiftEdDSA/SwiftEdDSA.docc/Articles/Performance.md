@@ -1,9 +1,13 @@
 # Performance
 
+Execution times for certain SwiftEdDSA operations
+
 ## 
 The signature generation and verification time for a short message and the time it takes to
 generate a new private key and to generate a public key from its private key
-was measured on an iMac 2021, Apple M1 chip. The results are shown below:
+was measured on an iMac 2021, Apple M1 chip. 
+
+The results are shown below - units are milliseconds or microseconds.
 
 | Operation | Ed25519 | Ed448 |
 |:----------|--------:|------:|

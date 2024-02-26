@@ -1,5 +1,7 @@
 # ``SwiftEdDSA/PrivateKey``
 
+The private key - either an Ed25519 private key or an Ed448 private key
+
 ## Topics
 
 ### Properties

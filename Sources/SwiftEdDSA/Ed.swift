@@ -32,9 +32,7 @@ public class Ed {
 
     // MARK: Exceptions
 
-    ///
-    /// EdDSA exceptions
-    ///
+    /// The EdDSA exceptions
     public enum Ex: Error {
         /// ASN1 structure exception
         case asn1Structure
@@ -53,9 +51,7 @@ public class Ed {
     
     // MARK: Curve kinds
 
-    ///
-    /// EdDSA curve kinds
-    ///
+    /// The EdDSA curve kinds
     public enum Kind {
         /// Curve Ed25519
         case ed25519

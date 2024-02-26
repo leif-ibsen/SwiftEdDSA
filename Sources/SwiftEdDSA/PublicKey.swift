@@ -8,9 +8,6 @@
 import ASN1
 import Digest
 
-///
-/// A public key - either an Ed25519 public key or an Ed448 public key
-///
 public class PublicKey: CustomStringConvertible {
     
     // MARK: Stored Properties

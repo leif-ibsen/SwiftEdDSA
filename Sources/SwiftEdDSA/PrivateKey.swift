@@ -10,9 +10,6 @@ import BigInt
 import ASN1
 import Digest
 
-///
-/// A private key - either an Ed25519 private key or an Ed448 private key
-///
 public class PrivateKey: CustomStringConvertible {
 
     // MARK: Stored Properties

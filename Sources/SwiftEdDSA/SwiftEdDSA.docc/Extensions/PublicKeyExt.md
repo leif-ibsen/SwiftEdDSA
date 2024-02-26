@@ -1,5 +1,7 @@
 # ``SwiftEdDSA/PublicKey``
 
+The public key - either an Ed25519 public key or an Ed448 public key
+
 ## Topics
 
 ### Properties
