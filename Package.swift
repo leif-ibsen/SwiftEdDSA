@@ -12,7 +12,6 @@ let package = Package(
             targets: ["SwiftEdDSA"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.1.0"),
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.16.0"),
         .package(url: "https://github.com/leif-ibsen/ASN1", from: "2.4.0"),
