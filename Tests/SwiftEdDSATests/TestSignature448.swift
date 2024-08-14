@@ -200,6 +200,7 @@ class TestSignature448: XCTestCase {
         var ctx: Bytes = [1, 2, 3, 4, 5, 6, 7, 8]
         for _ in 0 ..< 5 {
             let sig = try privKey.sign(message: message, context: ctx, deterministic: false)
+            XCTAssertTrue(sig[113] == 0 && sig[112] < 0x40)
             XCTAssertTrue(pubKey.verify(signature: sig, message: message, context: ctx))
             XCTAssertFalse(pubKey.verify(signature: sig, message: message + [1], context: ctx))
             ctx = ctx + ctx
@@ -217,6 +218,17 @@ class TestSignature448: XCTestCase {
         try doTest7(hex2bytes(wpMessage7))
         try doTest7(hex2bytes(wpMessage8))
         try doTest7(hex2bytes(wpMessage9))
+    }
+    
+    // Test signature encode/decode
+    func test8() throws {
+        let (pub, priv) = Ed.makeKeyPair(kind: .ed448)
+        let sig1 = try priv.sign(message: [], deterministic: true)
+        let sig2 = try priv.sign(message: [], deterministic: false)
+        XCTAssertTrue(pub.verify(signature: sig1, message: []))
+        XCTAssertTrue(pub.verify(signature: sig2, message: []))
+        XCTAssertEqual(sig1, try Ed.decodeSignature(signature: Ed.encodeSignature(signature: sig1)))
+        XCTAssertEqual(sig2, try Ed.decodeSignature(signature: Ed.encodeSignature(signature: sig2)))
     }
 
 }

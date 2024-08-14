@@ -42,10 +42,12 @@ public class Ed {
         case context
         /// Point decoding exception
         case decode
-        /// Keysize exception
+        /// Key size exception
         case keySize
         /// PEM structure exception
         case pemStructure
+        /// Signature size exception
+        case signatureSize
     }
 
     
@@ -83,6 +85,49 @@ public class Ed {
             return try PublicKey(privateKey: PrivateKey(s: s)).r == r
         } catch {
             return false
+        }
+    }
+
+    /// Encode a signature to ASN1
+    ///
+    /// - Parameters:
+    ///   - signature: The signature bytes
+    /// - Returns: The ASN1 DER encoding of `signature`
+    /// - Throws: An exception if the signature size is wrong
+    public static func encodeSignature(signature: Bytes) throws -> ASN1 {
+        if signature.count == 64 {
+            return ASN1Sequence().add(ASN1OctetString(Bytes(signature[0 ..< 32]))).add(ASN1OctetString(Bytes(signature[32 ..< 64])))
+        } else if signature.count == 114 {
+            return ASN1Sequence().add(ASN1OctetString(Bytes(signature[0 ..< 57]))).add(ASN1OctetString(Bytes(signature[57 ..< 114])))
+        } else {
+            throw Ed.Ex.signatureSize
+        }
+    }
+
+    /// Decode a signature ASN1 representation to bytes
+    ///
+    /// - Parameters:
+    ///   - signature: The signature ASN1 DER representation
+    /// - Returns: The signature bytes
+    /// - Throws: An exception if the ASN1 structure is wrong
+    public static func decodeSignature(signature: ASN1) throws -> Bytes {
+        guard let seq = signature as? ASN1Sequence else {
+            throw Ed.Ex.asn1Structure
+        }
+        let rs = seq.getValue()
+        guard rs.count == 2 else {
+            throw Ed.Ex.asn1Structure
+        }
+        guard let r = rs[0] as? ASN1OctetString else {
+            throw Ed.Ex.asn1Structure
+        }
+        guard let s = rs[1] as? ASN1OctetString else {
+            throw Ed.Ex.asn1Structure
+        }
+        if (r.value.count == 32 && s.value.count == 32) || (r.value.count == 57 && s.value.count == 57) {
+            return r.value + s.value
+        } else {
+            throw Ed.Ex.asn1Structure
         }
     }
 
