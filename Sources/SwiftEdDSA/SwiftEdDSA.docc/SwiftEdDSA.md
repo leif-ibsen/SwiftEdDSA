@@ -135,7 +135,7 @@ To use SwiftEdDSA, in your project *Package.swift* file add a dependency like
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "3.5.0"),
+  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "3.6.0"),
 ]
 ```
 
@@ -145,7 +145,7 @@ SwiftEdDSA itself depends on the ASN1, BigInt and Digest packages
 dependencies: [
   .package(url: "https://github.com/leif-ibsen/ASN1", from: "2.6.0"),
   .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.19.0"),
-  .package(url: "https://github.com/leif-ibsen/Digest", from: "1.6.0"),
+  .package(url: "https://github.com/leif-ibsen/Digest", from: "1.8.0"),
 ],
 ```
 
@@ -159,7 +159,6 @@ SwiftEdDSA requires Swift 5.0. It also requires that the `Int` and `UInt` types 
 - ``SwiftEdDSA/Ed``
 - ``SwiftEdDSA/PrivateKey``
 - ``SwiftEdDSA/PublicKey``
-- ``SwiftEdDSA/Base64``
 
 ### Type Aliases
 

@@ -23,10 +23,10 @@ public class PrivateKey: CustomStringConvertible {
     // MARK: Computed Properties
 
     /// The ASN1 encoding of `self`
-    public var asn1: ASN1 { get { return ASN1Sequence().add(ASN1Integer(BInt.ZERO)).add(ASN1Sequence().add(self.oid)).add(ASN1OctetString([4, Byte(self.s.count)] + self.s)) } }
-    /// The DER encoding of `self`
+    public var asn1: ASN1 { get { return ASN1Sequence().add(ASN1Integer(BInt.ZERO)).add(ASN1Sequence().add(self.oid)).add(ASN1OctetString(ASN1OctetString(self.s).encode())) } }
+    /// The DER encoding of `self.asn1`
     public var der: Bytes { get { return self.asn1.encode() } }
-    /// The PEM encoding of `self`
+    /// The PEM encoding of `self.asn1`
     public var pem: String { get { return Base64.pemEncode(self.asn1.encode(), "PRIVATE KEY") } }
     /// A textual representation of the ASN1 encoding of `self`
     public var description: String { get { return self.asn1.description } }
@@ -101,11 +101,11 @@ public class PrivateKey: CustomStringConvertible {
         guard let oid = seq1.get(0) as? ASN1ObjectIdentifier else {
             throw Ed.Ex.asn1Structure
         }
-        if oid == Ed.OID25519 && octets.value.count == 34 {
-            try self.init(s: Bytes(octets.value[2 ..< 34]))
+        guard let seq2 = try ASN1.build(octets.value) as? ASN1OctetString else {
+            throw Ed.Ex.asn1Structure
         }
-        else if oid == Ed.OID448 && octets.value.count == 59 {
-            try self.init(s: Bytes(octets.value[2 ..< 59]))
+        if (oid == Ed.OID25519 && seq2.value.count == 32) || (oid == Ed.OID448 && seq2.value.count == 57) {
+            try self.init(s: seq2.value)
         } else {
             throw Ed.Ex.asn1Structure
         }
@@ -117,7 +117,10 @@ public class PrivateKey: CustomStringConvertible {
     ///   - pem: The private key PEM encoding
     /// - Throws: An exception if the PEM encoding is wrong
     public convenience init(pem: String) throws {
-        try self.init(der: Base64.pemDecode(pem, "PRIVATE KEY"))
+        guard let der = Base64.pemDecode(pem, "PRIVATE KEY") else {
+            throw Ed.Ex.pemStructure
+        }
+        try self.init(der: der)
     }
 
     // MARK: Instance Methods

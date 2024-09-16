@@ -25,9 +25,9 @@ public class PublicKey: CustomStringConvertible {
 
     /// The ASN1 encoding of `self`
     public var asn1: ASN1 { get { do { return ASN1Sequence().add(ASN1Sequence().add(self.oid)).add(try ASN1BitString(self.r, 0)) } catch { return ASN1.NULL } } }
-    /// The DER encoding of `self`
+    /// The DER encoding of `self.asn1`
     public var der: Bytes { get { return self.asn1.encode() } }
-    /// The PEM encoding of `self`
+    /// The PEM encoding of `self.asn1`
     public var pem: String { get { return Base64.pemEncode(self.asn1.encode(), "PUBLIC KEY") } }
     /// A textual representation of the ASN1 encoding of `self`
     public var description: String { get { return self.asn1.description } }
@@ -132,7 +132,10 @@ public class PublicKey: CustomStringConvertible {
     ///   - pem: The public key PEM encoding
     /// - Throws: An exception if the PEM encoding is wrong
     public convenience init(pem: String) throws {
-        try self.init(der: Base64.pemDecode(pem, "PUBLIC KEY"))
+        guard let der = Base64.pemDecode(pem, "PUBLIC KEY") else {
+            throw Ed.Ex.pemStructure
+        }
+        try self.init(der: der)
     }
 
 

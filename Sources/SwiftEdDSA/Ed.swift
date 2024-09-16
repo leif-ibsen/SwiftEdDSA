@@ -36,8 +36,6 @@ public class Ed {
     public enum Ex: Error {
         /// ASN1 structure exception
         case asn1Structure
-        /// Base64 exception
-        case base64
         /// Context exception
         case context
         /// Point decoding exception
