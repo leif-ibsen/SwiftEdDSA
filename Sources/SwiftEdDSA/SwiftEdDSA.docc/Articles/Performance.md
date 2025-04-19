@@ -3,18 +3,18 @@
 Execution times for certain SwiftEdDSA operations
 
 ## 
-The signature generation and verification time for a short message and the time it takes to
-generate a new private key and to generate a public key from its private key
-was measured on an iMac 2021, Apple M1 chip. 
+The time it takes to generate a new private key and to generate a public key from its private key
+was measured on a MacBook Pro 2024, Apple M3 chip.
 
+The signature generation and verification time for a short message was also measured. 
 The results are shown below - units are milliseconds or microseconds.
 
-| Operation | Ed25519 | Ed448 |
-|:----------|--------:|------:|
-| Sign | 0.8 mSec | 2.1 mSec |
-| Verify | 1.1 mSec | 3.0 mSec |
-| Public Key Generation  | 2.8 mSec  | 6.6 mSec |
-| Private Key Generation  | 0.67 uSec  | 0.61 uSec |
+| Operation            | Ed25519   | Ed448     |
+|:---------------------|----------:|----------:|
+| Generate private Key | 0.4 uSec  | 0.3 uSec  |
+| Generate public Key  | 2.8 mSec  | 5.8 mSec  |
+| Sign                 | 0.8 mSec  | 1.9 mSec  |
+| Verify               | 1.0 mSec  | 2.5 mSec  |
 
 > Note:
 The public key constructor computes and caches information that subsequently speed-up signature verification.

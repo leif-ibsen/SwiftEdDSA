@@ -102,14 +102,25 @@ let privKey = try PrivateKey(pem: privPEM)
 
 let msg = Bytes("Hi, there".utf8)
 
-// Sign deterministically
+// Sign deterministically in pure operation mode
 let deterministicSig = try privKey.sign(message: msg, deterministic: true)
 
-// Sign non-deterministically
+// Sign non-deterministically in pure operation mode
 let nonDeterministicSig = try privKey.sign(message: msg, deterministic: false)
 
 print("Verified:", pubKey.verify(signature: deterministicSig, message: msg))
 print("Verified:", pubKey.verify(signature: nonDeterministicSig, message: msg))
+
+// Alternatively, use pre-hash operation mode
+
+// Sign deterministically in pre-hash operation mode
+let deterministicSigPH = try privKey.signPH(message: msg, deterministic: true)
+
+// Sign non-deterministically in pre-hash operation mode
+let nonDeterministicSigPH = try privKey.signPH(message: msg, deterministic: false)
+
+print("Verified:", pubKey.verifyPH(signature: deterministicSigPH, message: msg))
+print("Verified:", pubKey.verifyPH(signature: nonDeterministicSigPH, message: msg))
 
 // See the signatures as ASN1
 try print(Ed.encodeSignature(signature: deterministicSig))
@@ -118,6 +129,8 @@ try print(Ed.encodeSignature(signature: nonDeterministicSig))
 giving (for example):
 
 ```swift
+Verified: true
+Verified: true
 Verified: true
 Verified: true
 Sequence (2):
@@ -135,17 +148,16 @@ To use SwiftEdDSA, in your project *Package.swift* file add a dependency like
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "3.6.0"),
+  .package(url: "https://github.com/leif-ibsen/SwiftEdDSA", from: "4.0.0"),
 ]
 ```
-
-SwiftEdDSA itself depends on the ASN1, BigInt and Digest packages
+SwiftEdDSA itself depends on the [ASN1](https://leif-ibsen.github.io/ASN1/documentation/asn1), [BigInt](https://leif-ibsen.github.io/BigInt/documentation/bigint) and [Digest](https://leif-ibsen.github.io/Digest/documentation/digest) packages
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/leif-ibsen/ASN1", from: "2.6.0"),
-  .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.19.0"),
-  .package(url: "https://github.com/leif-ibsen/Digest", from: "1.8.0"),
+  .package(url: "https://github.com/leif-ibsen/ASN1", from: "2.7.0"),
+  .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.21.0"),
+  .package(url: "https://github.com/leif-ibsen/Digest", from: "1.13.0"),
 ],
 ```
 
@@ -167,7 +179,8 @@ SwiftEdDSA requires Swift 5.0. It also requires that the `Int` and `UInt` types 
 
 ### Additional Information
 
-- <doc:CryptoKit>
+- <doc:AboutEdDSA>
 - <doc:Performance>
+- <doc:CryptoKit>
 - <doc:References>
 

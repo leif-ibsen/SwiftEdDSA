@@ -16,3 +16,5 @@ Its documentation is build with the DocC plugin and published on GitHub Pages at
 https://leif-ibsen.github.io/SwiftEdDSA/documentation/swifteddsa
 
 The documentation is also available in the *SwiftEdDSA.doccarchive* file.
+
+The KAT test vectors come from NIST ACVP-server version 1.1.0.38.

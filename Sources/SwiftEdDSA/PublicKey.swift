@@ -141,7 +141,7 @@ public class PublicKey: CustomStringConvertible {
 
     // MARK: Instance Methods
 
-    /// Verifies an EdDSA signature
+    /// Verifies an EdDSA signature in pure operation mode
     ///
     /// - Parameters:
     ///   - signature: The EdDSA signature to verify
@@ -149,8 +149,45 @@ public class PublicKey: CustomStringConvertible {
     ///   - context: The context - must be the same as in the corresponding sign operation for the verification to succeed
     /// - Returns: `true` if the signature is verified, else `false`
     public func verify(signature: Bytes, message: Bytes, context: Bytes = []) -> Bool {
+        return self.doVerify(signature, message, context, true, false, false)
+    }
+
+    /// Verifies an EdDSA signature in contextualized operation mode
+    ///
+    /// - Parameters:
+    ///   - signature: The EdDSA signature to verify
+    ///   - message: The message to verify signature for
+    ///   - context: The context - must be the same as in the corresponding sign operation for the verification to succeed
+    /// - Returns: `true` if the signature is verified, else `false`
+    public func verifyCT(signature: Bytes, message: Bytes, context: Bytes) -> Bool {
+        return self.doVerify(signature, message, context, false, true, false)
+    }
+
+    /// Verifies an EdDSA signature in pre-hash operation mode
+    ///
+    /// - Parameters:
+    ///   - signature: The EdDSA signature to verify
+    ///   - message: The message to verify signature for
+    ///   - context: The context - must be the same as in the corresponding sign operation for the verification to succeed
+    /// - Returns: `true` if the signature is verified, else `false`
+    public func verifyPH(signature: Bytes, message: Bytes, context: Bytes = []) -> Bool {
+        var msg: Bytes
+        if self.oid == Ed.OID25519 {
+            msg = MessageDigest(.SHA2_512).digest(message)
+        } else {
+            let shake = SHAKE(.SHAKE256)
+            shake.update(message)
+            msg = shake.digest(64)
+        }
+        return self.doVerify(signature, msg, context, false, false, true)
+    }
+
+    func doVerify(_ signature: Bytes, _ message: Bytes, _ context: Bytes, _ pure: Bool, _ ct: Bool, _ ph: Bool) -> Bool {
+        if context.count > 255 {
+            return false
+        }
         if signature.count == 64 {
-            if context.count > 0 {
+            if pure && context.count > 0 {
                 return false
             }
             let R = Bytes(signature[0 ..< 32])
@@ -159,6 +196,11 @@ public class PublicKey: CustomStringConvertible {
                 return false
             }
             let md = MessageDigest(.SHA2_512)
+            if ph {
+                md.update(Ed25519.dom2(1, context))
+            } else if ct {
+                md.update(Ed25519.dom2(0, context))
+            }
             md.update(R)
             md.update(self.r)
             md.update(message)
@@ -166,7 +208,7 @@ public class PublicKey: CustomStringConvertible {
             let p = Point25519.multiplyG(S).add(self.multiply25519(k).negate())
             return p.encode() == R
         } else if signature.count == 114 {
-            if context.count > 255 {
+            if ct {
                 return false
             }
             let R = Bytes(signature[0 ..< 57])
@@ -175,7 +217,7 @@ public class PublicKey: CustomStringConvertible {
                 return false
             }
             let shake = SHAKE(.SHAKE256)
-            shake.update(Ed448.dom4Bytes(context))
+            shake.update(Ed448.dom4(ph ? 1 : 0, context))
             shake.update(R)
             shake.update(self.r)
             shake.update(message)
@@ -185,7 +227,8 @@ public class PublicKey: CustomStringConvertible {
         }
         return false
     }
-    
+
+
     // Multiply the public key point
     // [GUIDE] - algorithm 3.41, window width = 4
     func multiply25519(_ n: Bytes) -> Point25519 {

@@ -23,3 +23,5 @@ The private key - either an Ed25519 private key or an Ed448 private key
 ### Methods
 
 - ``sign(message:context:deterministic:)``
+- ``signCT(message:context:deterministic:)``
+- ``signPH(message:context:deterministic:)``

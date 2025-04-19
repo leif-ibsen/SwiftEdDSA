@@ -48,6 +48,10 @@ class Ed25519 {
         return b
     }
 
+    static func dom2(_ x: Byte, _ context: Bytes) -> Bytes {
+        return "SigEd25519 no Ed25519 collisions".utf8 + [x] + [Byte(context.count)] + context
+    }
+
     // Barrett reduction
 
     static let uL = (BInt.ONE << 512) / Ed25519.L

@@ -48,8 +48,8 @@ class Ed448 {
         return b
     }
 
-    static func dom4Bytes(_ context: Bytes) -> Bytes {
-        return "SigEd448".utf8 + [0] + [Byte(context.count)] + context
+    static func dom4(_ x: Byte, _ context: Bytes) -> Bytes {
+        return "SigEd448".utf8 + [x] + [Byte(context.count)] + context
     }
 
     // Barrett reduction

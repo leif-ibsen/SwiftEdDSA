@@ -20,7 +20,7 @@ final class TestCryptoKit: XCTestCase {
         let ckPriv = CryptoKit.Curve25519.Signing.PrivateKey()
         let edPub = try PublicKey(r: Bytes(ckPriv.publicKey.rawRepresentation))
 
-        for _ in 0 ..< 5 {
+        for _ in 0 ..< 10 {
             let sig = try ckPriv.signature(for: msg)
             XCTAssertTrue(edPub.verify(signature: Bytes(sig), message: msg))
             XCTAssertFalse(edPub.verify(signature: Bytes(sig), message: msg + [1]))
@@ -33,7 +33,7 @@ final class TestCryptoKit: XCTestCase {
 
         let edPriv = PrivateKey(kind: .ed25519)
         let ckPub = try CryptoKit.Curve25519.Signing.PublicKey(rawRepresentation: PublicKey(privateKey: edPriv).r)
-        for _ in 0 ..< 5 {
+        for _ in 0 ..< 10 {
             let sig = try edPriv.sign(message: msg, deterministic: false)
             XCTAssertTrue(ckPub.isValidSignature(sig, for: msg))
             XCTAssertFalse(ckPub.isValidSignature(sig, for: msg + [1]))

@@ -23,4 +23,6 @@ The public key - either an Ed25519 public key or an Ed448 public key
 ### Methods
 
 - ``verify(signature:message:context:)``
+- ``verifyCT(signature:message:context:)``
+- ``verifyPH(signature:message:context:)``
 

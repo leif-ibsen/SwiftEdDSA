@@ -125,7 +125,7 @@ public class PrivateKey: CustomStringConvertible {
 
     // MARK: Instance Methods
 
-    /// Signs a message
+    /// Signs a message in pure operation mode
     ///
     /// - Parameters:
     ///   - message: The message to sign
@@ -134,8 +134,47 @@ public class PrivateKey: CustomStringConvertible {
     /// - Returns: The EdDSA signature - 64 bytes for Ed25519, 114 bytes for Ed448
     /// - Throws: A `context` exception if `context` contains more than 0 bytes for Ed25519 or more than 255 bytes for Ed448
     public func sign(message: Bytes, context: Bytes = [], deterministic: Bool = true) throws -> Bytes {
+        return try self.doSign(message, context, deterministic, true, false, false)
+    }
+
+    /// Signs a message in contextualized operation mode
+    ///
+    /// - Parameters:
+    ///   - message: The message to sign
+    ///   - context: The context
+    ///   - deterministic: If `true` generate a deterministic signature, else generate a non-deterministic signature - `true` is default
+    /// - Returns: The EdDSA signature - 64 bytes for Ed25519
+    /// - Throws: A `context` exception if `context` contains more than 255 bytes, a `keySize` exception if `self` is an Ed448 key
+    public func signCT(message: Bytes, context: Bytes, deterministic: Bool = true) throws -> Bytes {
+        return try self.doSign(message, context, deterministic, false, true, false)
+    }
+
+    /// Signs a message in pre-hash operation mode
+    ///
+    /// - Parameters:
+    ///   - message: The message to sign
+    ///   - context: The context - the default value is an empty array
+    ///   - deterministic: If `true` generate a deterministic signature, else generate a non-deterministic signature - `true` is default
+    /// - Returns: The EdDSA signature - 64 bytes for Ed25519, 114 bytes for Ed448
+    /// - Throws: A `context` exception if `context` contains more than 255 bytes
+    public func signPH(message: Bytes, context: Bytes = [], deterministic: Bool = true) throws -> Bytes {
+        var msg: Bytes
         if self.oid == Ed.OID25519 {
-            if context.count > 0 {
+            msg = MessageDigest(.SHA2_512).digest(message)
+        } else {
+            let shake = SHAKE(.SHAKE256)
+            shake.update(message)
+            msg = shake.digest(64)
+        }
+        return try self.doSign(msg, context, deterministic, false, false, true)
+    }
+    
+    func doSign(_ message: Bytes, _ context: Bytes, _ deterministic: Bool, _ pure: Bool, _ ct: Bool, _ ph: Bool) throws -> Bytes {
+        if context.count > 255 {
+            throw Ed.Ex.context
+        }
+        if self.oid == Ed.OID25519 {
+            if pure && context.count > 0 {
                 throw Ed.Ex.context
             }
             let md = MessageDigest(.SHA2_512)
@@ -147,28 +186,43 @@ public class PrivateKey: CustomStringConvertible {
             h0[31] |= 0x40
             let h1 = Bytes(h[32 ..< 64])
             if deterministic {
+                if ph {
+                    md.update(Ed25519.dom2(1, context))
+                } else if ct {
+                    md.update(Ed25519.dom2(0, context))
+                }
                 md.update(h1)
-                md.update(message)
             } else {
+                let d2 = ph ? Ed25519.dom2(1, context) : (ct ? Ed25519.dom2(0, context) : [])
+                md.update(d2)
                 var z = Bytes(repeating: 0, count: 32)
                 Ed.randomBytes(&z)
                 md.update(z)
                 md.update(h1)
-                md.update(Bytes(repeating: 0, count: 64))
-                md.update(message)
+                var zeroCount = 64 - d2.count
+                while zeroCount < 0 {
+                    zeroCount += 128
+                }
+                md.update(Bytes(repeating: 0, count: zeroCount))
             }
+            md.update(message)
             let r = Ed25519.reduceModL(Ed.toBInt(md.digest()))
             let R = Point25519.multiplyG(Ed25519.toBytes(r)).encode()
             let a = Ed.toBInt(h0)
             let A = Point25519.multiplyG(h0).encode()
+            if ph {
+                md.update(Ed25519.dom2(1, context))
+            } else if ct {
+                md.update(Ed25519.dom2(0, context))
+            }
             md.update(R)
             md.update(A)
             md.update(message)
             let k = Ed25519.reduceModL(Ed.toBInt(md.digest()))
             return R + Ed25519.toBytes(Ed25519.reduceModL(k * a + r))
         } else {
-            if context.count > 255 {
-                throw Ed.Ex.context
+            if ct {
+                throw Ed.Ex.keySize
             }
             let shake = SHAKE(.SHAKE256)
             shake.update(self.s)
@@ -178,31 +232,27 @@ public class PrivateKey: CustomStringConvertible {
             h0[55] |= 0x80
             h0[56] = 0x00
             let h1 = Bytes(h[57 ..< 114])
+            let d4 = Ed448.dom4(ph ? 1 : 0, context)
+            shake.update(d4)
             if deterministic {
-                shake.update(Ed448.dom4Bytes(context))
                 shake.update(h1)
-                shake.update(message)
             } else {
                 var z = Bytes(repeating: 0, count: 57)
                 Ed.randomBytes(&z)
-                var zeroCount = 408 - context.count - 124
-                if zeroCount >= 136 {
-                    zeroCount -= 136
-                }
-                if zeroCount >= 136 {
-                    zeroCount -= 136
-                }
-                shake.update(Ed448.dom4Bytes(context))
                 shake.update(z)
                 shake.update(h1)
+                var zeroCount = 22 - d4.count
+                while zeroCount < 0 {
+                    zeroCount += 136
+                }
                 shake.update(Bytes(repeating: 0, count: zeroCount))
-                shake.update(message)
             }
+            shake.update(message)
             let r = Ed448.reduceModL(Ed.toBInt(shake.digest(114)))
             let R = Point448.multiplyG(Ed448.toBytes(r)).encode()
             let a = Ed.toBInt(h0)
             let A = Point448.multiplyG(h0).encode()
-            shake.update(Ed448.dom4Bytes(context))
+            shake.update(Ed448.dom4(ph ? 1 : 0, context))
             shake.update(R)
             shake.update(A)
             shake.update(message)
@@ -210,5 +260,4 @@ public class PrivateKey: CustomStringConvertible {
             return R + Ed448.toBytes(Ed448.reduceModL(k * a + r))
         }
     }
-
 }
